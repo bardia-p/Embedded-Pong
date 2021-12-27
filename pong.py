@@ -98,7 +98,7 @@ class Pong:
     def play(self):
         if self.AIPlayer:
             if abs(self.b.y - self.l_p.y) <= 10:
-                self.l_p.v = 8 if self.b.y > self.l_p.y else -8
+                self.l_p.v = 4 if self.b.y > self.l_p.y else -4
 
         self.b.move()
         self.r_p.move()
@@ -122,8 +122,7 @@ class Pong:
         # ball collision on the left wall
         elif int(self.b.x) <= BALL_RADIUS + PADDLE_WIDTH:
             self.r_score += 1
-            self.b = Ball(WIDTH // 2, HEIGHT // 2)
-            self.scored = True
+            self.restart()
 
         # ball collision on the right paddle
         if int(self.b.x) >= WIDTH + 1 - BALL_RADIUS - PADDLE_WIDTH and \
@@ -134,8 +133,7 @@ class Pong:
         # ball collision on the right wall
         elif int(self.b.x) >= WIDTH + 1 - BALL_RADIUS - PADDLE_WIDTH:
             self.l_score += 1
-            self.b = Ball(WIDTH // 2, HEIGHT // 2)
-            self.scored = True
+            self.restart()
 
     def keydown(self, event):
         if event.key == K_UP:
@@ -158,4 +156,10 @@ class Pong:
             self.l_p.v = velocity
         elif panel == Direction.RIGHT:
             self.r_p.v = velocity
+
+    def restart(self):
+        self.scored = True
+        self.b = Ball(WIDTH // 2, HEIGHT // 2)
+        self.l_p = Paddle(PADDLE_WIDTH // 2 - 1, HEIGHT//2)
+        self.r_p = Paddle(WIDTH - PADDLE_WIDTH // 2, HEIGHT//2)
 
