@@ -2,7 +2,7 @@
 #include <stdio.h>
 
 /* Constants */
-#define DELAY_VALUE 100 		//Used for the debouncing
+#define DELAY_VALUE 100 	//Used for the debouncing
 #define RGB_LED_MASK 0x07 	//Used for the RGB LED
 
 /* Function Prototypes */
@@ -24,7 +24,7 @@ void handleRGBState(void);
 void handleScoring(void);
 
 /* Global Variables */
-static char buffer[80]; 											//Keeps track of the serial buffer
+static char buffer[80]; 			//Keeps track of the serial buffer
 static volatile uint8_t scoreTimerCount = 0; 	//Keeps track of interrupt count for the score LED.
 
 /*
@@ -39,7 +39,7 @@ int main() {
 	config_leds();
 	
 	// Configure interrupts
-  config_interrupts();
+  	config_interrupts();
 	
 	// Configure Timer A0
 	config_TA0();
@@ -110,7 +110,7 @@ void config_leds(){
 	// Set default state of all pins to off
 	P1->OUT &= (uint8_t)(~(1<<0));
 
-    // Disable interrupts
+    	// Disable interrupts
 	P1->IE &= (uint8_t)(~(1<<0)); 
 
   /* LEDs P2.0, P2.1, P2.2 */
@@ -147,12 +147,12 @@ Configure Timer A0.
 */
 void config_TA0(void) {
   TA0CTL &= (uint16_t)(~((1<<5)|(1<<4)));   	// Stop the timer
-	TA0CTL &= (uint16_t)(~(1<<0));              // Clear interrupt flag TAIFG
-	TA0CCR0 = (uint16_t)(16384);             		// Holds the upper limit value 1s
-	TA0CTL |= (uint16_t)((1<<1));               // Interrupt enable TAIE
-	TA0CTL |= (uint16_t)((1<<4));               // Up count Mode Control
-	TA0CTL |= (uint16_t)((1<<8));               // ACLK as source for timer -> 32.768 kHz
-	TA0CTL &= (uint16_t)(~(1<<9));							// Clear clock source TASSEL
+	TA0CTL &= (uint16_t)(~(1<<0));          // Clear interrupt flag TAIFG
+	TA0CCR0 = (uint16_t)(16384);            // Holds the upper limit value 1s
+	TA0CTL |= (uint16_t)((1<<1));           // Interrupt enable TAIE
+	TA0CTL |= (uint16_t)((1<<4));           // Up count Mode Control
+	TA0CTL |= (uint16_t)((1<<8));           // ACLK as source for timer -> 32.768 kHz
+	TA0CTL &= (uint16_t)(~(1<<9));		// Clear clock source TASSEL
 }
 
 /*
@@ -166,7 +166,7 @@ void UART0_init(void) {
     P1->SEL0 |= 0x0C;                 /* P1.3, P1.2 for UART */
     P1->SEL1 &= ~0x0C;
     EUSCI_A0->CTLW0 &= ~1;            /* take UART out of reset mode */
-	  EUSCI_A0->IE |= 1;                /* enable receive interrupt */
+    EUSCI_A0->IE |= 1;                /* enable receive interrupt */
 }    
 
 /*
@@ -195,7 +195,7 @@ void PORT1_IRQHandler(void){
 	if((P1IFG & (uint8_t) 0x02) != 0){
 		P1IFG &= (uint8_t)~0x02;
 		sprintf(buffer, "UP\n");
-    UART0_puts(buffer);
+    		UART0_puts(buffer);
 	} else if((P1IFG & (uint8_t) 0x16) != 0){
 		P1IFG &= (uint8_t)~0x16;
 		sprintf(buffer, "DOWN\n");
@@ -204,10 +204,10 @@ void PORT1_IRQHandler(void){
 	
 	// Debouncing loop to make sure the button press was registered.
 	static uint16_t i = DELAY_VALUE;
-  while (i--) {
+  	while (i--) {
 		// Delay loop contains some asm code placeholder
 		__ASM volatile (""); 
-  }
+  	}
 	
 	sprintf(buffer, "DONE\n");
 	UART0_puts(buffer);
