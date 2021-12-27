@@ -136,17 +136,23 @@ class Pong:
 
     def keydown(self, event):
         if event.key == K_UP:
-            self.r_p.v = -8
+            self.move(-8, Direction.RIGHT)
         elif event.key == K_DOWN:
-            self.r_p.v = 8
+            self.move(8, Direction.RIGHT)
         elif event.key == K_w:
-            self.l_p.v = -8
+            self.move(-8, Direction.LEFT)
         elif event.key == K_s:
-            self.l_p.v = 8
+            self.move(8, Direction.LEFT)
 
     def keyup(self, event):
         if event.key in (K_w, K_s):
-            self.l_p.v = 0
+            self.move(0, Direction.LEFT)
         elif event.key in (K_UP, K_DOWN):
-            self.r_p.v = 0
+            self.move(0, Direction.RIGHT)
+
+    def move(self, velocity, panel):
+        if panel == Direction.LEFT:
+            self.l_p.v = velocity
+        elif panel == Direction.RIGHT:
+            self.r_p.v = velocity
 
