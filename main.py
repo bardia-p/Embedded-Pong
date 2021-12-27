@@ -1,6 +1,5 @@
 import pygame
 import serial
-import time
 import sys
 import threading
 from pygame.locals import *
@@ -78,6 +77,15 @@ reader.start()
 while True:
     pong.play()
 
+    # Turning the red LED on
+    if pong.scored:
+        while reader.isBusy:
+            continue
+
+        serialPort.write(b"G") # Writes G in the buffer
+        print("Sending the GOAL command...")
+        pong.scored = False
+
     for event in pygame.event.get():
         if event.type == KEYDOWN:
             pong.keydown(event)
@@ -87,6 +95,7 @@ while True:
             pygame.quit()
             reader.stop()
             sys.exit()
+
 
     pygame.display.update()
     fps.tick(60)

@@ -78,6 +78,7 @@ class Pong:
         self.l_score = 0
         self.r_score = 0
         self.AIPlayer = AIPlayer
+        self.scored = False
 
     def draw(self):
         self.canvas.fill(Color.BLACK.value)
@@ -122,6 +123,7 @@ class Pong:
         elif int(self.b.x) <= BALL_RADIUS + PADDLE_WIDTH:
             self.r_score += 1
             self.b = Ball(WIDTH // 2, HEIGHT // 2)
+            self.scored = True
 
         # ball collision on the right paddle
         if int(self.b.x) >= WIDTH + 1 - BALL_RADIUS - PADDLE_WIDTH and \
@@ -133,6 +135,7 @@ class Pong:
         elif int(self.b.x) >= WIDTH + 1 - BALL_RADIUS - PADDLE_WIDTH:
             self.l_score += 1
             self.b = Ball(WIDTH // 2, HEIGHT // 2)
+            self.scored = True
 
     def keydown(self, event):
         if event.key == K_UP:
